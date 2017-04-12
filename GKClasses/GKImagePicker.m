@@ -68,8 +68,8 @@
     
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    self.sourceImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     GKImageCropViewController *cropController = [[GKImageCropViewController alloc] init];
     cropController.contentSizeForViewInPopover = picker.contentSizeForViewInPopover;
     cropController.sourceImage = [info objectForKey:UIImagePickerControllerOriginalImage];
@@ -77,16 +77,14 @@
     cropController.cropSize = self.cropSize;
     cropController.delegate = self;
     [picker pushViewController:cropController animated:YES];
-    
 }
 
 #pragma mark -
 #pragma GKImagePickerDelegate
 
-- (void)imageCropController:(GKImageCropViewController *)imageCropController didFinishWithCroppedImage:(UIImage *)croppedImage{
-    
+- (void)imageCropController:(GKImageCropViewController *)imageCropController didFinishWithCroppedImage:(UIImage *)croppedImage {    
     if ([self.delegate respondsToSelector:@selector(imagePicker:pickedImage:)]) {
-        [self.delegate imagePicker:self pickedImage:croppedImage];   
+        [self.delegate imagePicker:self image:_sourceImage croppedImage:croppedImage];
     }
 }
 
